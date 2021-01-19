@@ -1,7 +1,10 @@
+
 #include "opencv2/opencv.hpp"
+#include "mylib.h"
 
 
 using namespace cv;
+
 
 std::string gstreamer_pipeline (int capture_width, int capture_height, int display_width, int display_height, int framerate, int flip_method) {
     return "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(capture_width) + ", height=(int)" +
@@ -34,24 +37,106 @@ cv::VideoCapture cap(pipeline, cv::CAP_GSTREAMER);
 	//VideoCapture cap(); // open the default camera
 	if(!cap.isOpened())  // check if we succeeded
 		return -1;
+	
+
+
 
 
 
 	while(1){
+char c=(char)waitKey(25);
 
-	    Mat frame;
+	    Mat frame,frame_out,frame_grayt;
 	    // Capture frame-by-frame
 	    cap >> frame;
+	
 
 	    // If the frame is empty, break immediately
 	    if (frame.empty())
 	      break;
+// ----------------------------Détection de contour----------------------------------------------
+if(c=='d') {
+while(1){
+  cap >> frame;
+ if (frame.empty())
+	      break;
+frame = detection_contour(frame);
+imshow("Detection de contour", frame);
+char c=(char)waitKey(25);
+if(c==8) break;
+}
+}
+// ----------------------------------Rouge en Jaune----------------------------------------------
+if(c=='j'){ 
+while(1){
+  cap >> frame;
+ if (frame.empty())
+	      break;
+frame = seuillage_rouge_jaune (frame);
+imshow("Seuillage couleur", frame);
+char c=(char)waitKey(25);
+if(c==8) break;
+}
+}
+
+// ----------------------------------Vert en Cyan----------------------------------------------
+	if(c=='c'){ 
+			while(1){
+ 		 	cap >> frame;
+ 			if (frame.empty())
+	     	 	break;
+			frame = seuillage_vert_cyan(frame);
+			imshow("Cyan", frame);
+			char c=(char)waitKey(25);
+			if(c==8) break;
+			}
+		}
+// ----------------------------------Bleu en Violet----------------------------------------------
+	if(c=='v'){ 
+			while(1){
+ 		 	cap >> frame;
+ 			if (frame.empty())
+	     	 	break;
+			frame = seuillage_bleu_violet(frame);
+			imshow("Violet", frame);
+			char c=(char)waitKey(25);
+			if(c==8) break;
+			}
+		}
+// ----------------------------------Noir et blanc----------------------------------------------
+
+if(c=='n'){ 
+while(1){
+  cap >> frame;
+ if (frame.empty())
+	      break;
+frame = noir_blanc(frame);
+imshow("Noir et blanc", frame);
+char c=(char)waitKey(25);
+if(c==8) break;
+}
+}
+
+if(c=='g'){ 
+while(1){
+  cap >> frame;
+ if (frame.empty())
+	      break;
+frame = gaussien( frame);
+imshow("Gaussien", frame);
+char c=(char)waitKey(25);
+if(c==8) break;
+}
+}
+
+
+
+else{ imshow("Frame", frame);}
 
 	    // Display the resulting frame
-	    imshow( "Frame", frame );
 
 	    // Press  ESC on keyboard to exit
-	    char c=(char)waitKey(25);
+	    
 	    if(c==27)
 	      break;
 	  }
