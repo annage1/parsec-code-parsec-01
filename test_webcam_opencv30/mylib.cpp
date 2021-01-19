@@ -117,22 +117,52 @@ for (int i=1;i<image_in.rows;i++){
 return image_in;
 }
 
-Mat gaussien(Mat image_in){
-Mat frame_copy;
-cvtColor(image_in,image_in,CV_BGR2GRAY);
-frame_copy.create(image_in.rows,image_in.cols,CV_8UC1);
-for (int i=150;i<500;i++){
-            for (int j=2;j<frame_copy.cols;j++){
-short temp;
 
-				temp = (short)(1/2)*image_in.at<uchar>(i,j-1)+(short)(1/2)*image_in.at<uchar>(i,j+1);
-   frame_copy.at<uchar>(i,j)=(uchar)temp;
+Mat gaussien(Mat image_in,int r_i, int r_j){
+Mat frame_copy,image_in_gray;
+//int r_i=5,r_j=5;
+float n;
+
+n=(2*r_i+1)*(2*r_j+1);
+
+//image_in_gray.create(image_in.rows,image_in.cols,CV_8UC1);
+cvtColor(image_in,image_in_gray,CV_BGR2GRAY);
+frame_copy.create(image_in_gray.rows,image_in_gray.cols,CV_8UC1);
+for (int i=r_i;i<(frame_copy.rows-r_i);i++){
+            for (int j=r_j;j<(frame_copy.cols-r_j);j++){
+float temp=0;
+
+for (int i_k=-r_i;i_k<r_i;i_k++){
+for (int j_k=-r_j;j_k<r_j;j_k++){
+
+temp +=(float)image_in_gray.at<uchar>(i,j);
+}
+}
+
+
+
+//				temp = (float)(1.0/2)*(float)image_in_gray.at<uchar>(i,j-1)+(float)(1.0/2)*(float)image_in_gray.at<uchar>(i,j+1);
+   frame_copy.at<uchar>(i,j)=(uchar)((float)(1.0/n)*temp);
 
 }
 }
 
 return frame_copy;
 }
+
+void RecupererHeure()
+{
+time_t timer1;
+time(&timer1);
+int secondes, minutes, heures;
+struct tm *newTime1;
+newTime1 = localtime(&timer1);
+heures = newTime1->tm_hour;		// Les heures sont dans "heures"
+minutes = newTime1->tm_min;		// Les minutes sont dans "minutes"
+secondes = newTime1->tm_sec;		// Les secondes sont dans "secondes"
+}
+	
+	
 
 
 Mat noir_blanc(Mat image_in){

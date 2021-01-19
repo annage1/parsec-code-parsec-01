@@ -119,11 +119,12 @@ if(c==8) break;
 
 if(c=='g'){ 
 while(1){
+Mat out;
   cap >> frame;
  if (frame.empty())
 	      break;
-frame = gaussien( frame);
-imshow("Gaussien", frame);
+out = gaussien( frame,5,5);
+imshow("Gaussien", out);
 char c=(char)waitKey(25);
 if(c==8) break;
 }

@@ -14,8 +14,8 @@ cv::Mat seuillage_rouge_jaune(cv::Mat image_in);
 cv::Mat seuillage_vert_cyan(cv::Mat image_in);
 cv::Mat seuillage_bleu_violet(cv::Mat image_in);
 cv::Mat detection_contour(cv::Mat image_in);
-cv::Mat gaussien(cv::Mat image_in);
+cv::Mat gaussien(cv::Mat image_in,int r_i, int r_j);
 cv::Mat noir_blanc(cv::Mat image_in);
 cv::Mat ghost_mode(cv::Mat image_in);
-
+void RecupererHeure();
 #endif
